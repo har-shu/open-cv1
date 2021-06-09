@@ -1,0 +1,94 @@
+
+!git clone https://github.com/har-shu/open-cv1.git
+%cd open-cv1/
+from IPython .display import clear_output
+clear_output
+
+
+
+
+
+
+from google.colab.patches import cv2_imshow
+from PIL import Image,ImageEnhance,ImageFilter
+img = Image.open("dr3.jpg")
+print(img.size)
+
+#brightness
+enhancer = ImageEnhance.Brightness(img)
+img_bright = enhancer.enhance(1.8)
+img_bright.save("outputs/bright.jpg")
+
+#dark
+img_dark = enhancer.enhance(0.5)
+img_dark.save("outputs/dark.jpg")
+
+#pixels
+with Image.open('dr3.jpg') as im:
+    px = im.load()
+print (px[4,4])
+px[4,4] = (0,0,0)
+print (px[4,4])
+
+#detail
+from PIL.ImageFilter import (
+   BLUR, CONTOUR, DETAIL, EDGE_ENHANCE, EDGE_ENHANCE_MORE,
+   EMBOSS, FIND_EDGES, SMOOTH, SMOOTH_MORE, SHARPEN
+)
+#Create image object
+img = Image.open('dr3.jpg')
+#Applying the blur filter
+img1 = img.filter(DETAIL)
+img1.save("outputs/detail.jpg")
+img1.show()
+
+#edge
+img1 = img.filter(EDGE_ENHANCE)
+img1.save('outputs/edge.jpg')
+
+#smooth
+img1 = img.filter(SMOOTH_MORE)
+img1.save('outputs/smooth.jpg')
+
+#sharp
+img1 = img.filter(SHARPEN)
+img1.save('outputs/sharp.jpg')
+
+#merge
+image = Image.open("dr3.jpg")
+r, g, b = image.split()
+image.show()
+image = Image.merge("RGB", (b, g, r))
+image.save("outputs/merge.jpg")
+
+#two
+#Read the two images
+image1 = Image.open('dr3.jpg')
+image1.show()
+image2 = Image.open('dr3.jpg')
+image2.show()
+#resize, first image
+image1 = image1.resize((426, 240))
+image2 = image2.resize((568,902))
+image1_size = image1.size
+image2_size = image2.size
+new_image = Image.new('RGB',(2*image1_size[0], image1_size[1]), (250,250,250))
+new_image.paste(image1,(0,0))
+new_image.paste(image2,(image1_size[0],0))
+new_image.save("outputs/merge_image.jpg")
+new_image.show()
+
+
+#flip
+
+
+imageObject = Image.open("dr3.jpg")
+
+# Do a flip of left and right
+hori_flippedImage = imageObject.transpose(Image.FLIP_LEFT_RIGHT)
+
+# Show the original image
+imageObject.show()
+
+# Show the horizontal flipped image
+hori_flippedImage.save("outputs/flip.jpg")
